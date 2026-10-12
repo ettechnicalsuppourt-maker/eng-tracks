@@ -722,9 +722,16 @@ function setupEventListeners() {
 
   // Currency Select
   const currencySelect = document.getElementById('currencySelect');
+  const currencySelectMobile = document.getElementById('currencySelectMobile');
   if (currencySelect) {
     currencySelect.value = currentCurrency;
     currencySelect.addEventListener('change', (e) => {
+      setCurrency(e.target.value);
+    });
+  }
+  if (currencySelectMobile) {
+    currencySelectMobile.value = currentCurrency;
+    currencySelectMobile.addEventListener('change', (e) => {
       setCurrency(e.target.value);
     });
   }
@@ -883,7 +890,9 @@ function setCurrency(currency) {
   currentCurrency = currency;
   localStorage.setItem('et_curr', currency);
   const select = document.getElementById('currencySelect');
+  const selectMobile = document.getElementById('currencySelectMobile');
   if (select) select.value = currency;
+  if (selectMobile) selectMobile.value = currency;
 
   renderCourses();
 }
