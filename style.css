@@ -792,9 +792,13 @@ html[dir="rtl"] .float-bottom-right {
   100% { transform: translateX(-50%); }
 }
 
-html[dir="rtl"] @keyframes ticker {
+@keyframes ticker-rtl {
   0% { transform: translateX(0); }
   100% { transform: translateX(50%); }
+}
+
+html[dir="rtl"] .ticker-track {
+  animation-name: ticker-rtl;
 }
 
 .partner-badge {
