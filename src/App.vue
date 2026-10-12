@@ -6,21 +6,26 @@
         <div class="top-bar-contact">
           <span class="top-bar-item">
             <i class="fa-solid fa-phone"></i>
-            <span>EG: <a href="tel:+201000073779">+20 100 007 3779</a></span>
+            <span class="country-badge">EG</span>
+            <a href="tel:+201000073779">+20 100 007 3779</a>
           </span>
+          <span class="top-bar-separator">|</span>
           <span class="top-bar-item">
             <i class="fa-solid fa-phone"></i>
-            <span>KSA: <a href="tel:+966545716788">+966 54 571 6788</a></span>
+            <span class="country-badge">KSA</span>
+            <a href="tel:+966545716788">+966 54 571 6788</a>
           </span>
-          <span class="top-bar-item">
+          <span class="top-bar-separator">|</span>
+          <span class="top-bar-item top-bar-email">
             <i class="fa-solid fa-envelope"></i>
-            <span><a href="mailto:info@engineering-tracks.com">info@engineering-tracks.com</a></span>
+            <a href="mailto:info@engineering-tracks.com">info@engineering-tracks.com</a>
           </span>
         </div>
 
         <div class="top-bar-right">
           <!-- Official Social Media Channels -->
           <div class="top-socials">
+            <span class="top-socials-label">{{ currentLang === 'ar' ? 'تابعنا:' : 'Follow Us:' }}</span>
             <a href="https://www.facebook.com/engtracks/" target="_blank" rel="noopener noreferrer" class="top-social-link" title="Facebook">
               <i class="fa-brands fa-facebook-f"></i>
             </a>
@@ -50,70 +55,179 @@
           <img src="/assets/logoAr_cropped.png" alt="Engineering Tracks Arabic Logo" class="logo-arabic" />
         </a>
 
-        <!-- Desktop & Mobile Navigation Menu -->
-        <nav>
-          <ul class="nav-menu" :class="{ open: mobileNavOpen }" id="navMenu">
-            <li><a href="#hero" class="nav-link" :class="{ active: activeSection === 'hero' }" @click="closeMobileNav">{{ t('nav_home') }}</a></li>
-            <li><a href="#tracks" class="nav-link" :class="{ active: activeSection === 'tracks' }" @click="closeMobileNav">{{ t('nav_tracks') }}</a></li>
-            <li><a href="#courses" class="nav-link" :class="{ active: activeSection === 'courses' }" @click="closeMobileNav">{{ t('nav_courses') }}</a></li>
-            <li><a href="#simulator" class="nav-link" :class="{ active: activeSection === 'simulator' }" @click="closeMobileNav">{{ t('nav_exams') }}</a></li>
-            <li><a href="#why-us" class="nav-link" :class="{ active: activeSection === 'why-us' }" @click="closeMobileNav">{{ t('nav_why') }}</a></li>
-            <li><a href="#branches" class="nav-link" :class="{ active: activeSection === 'branches' }" @click="closeMobileNav">{{ t('nav_contact') }}</a></li>
-            
-            <!-- Mobile Menu Footer Controls -->
-            <li class="mobile-menu-footer">
-              <div class="mobile-currency-row">
-                <span style="font-size:0.85rem; font-weight:600; color:var(--text-muted);">Currency:</span>
-                <select v-model="currentCurrency" class="currency-select" aria-label="Select Currency Mobile">
-                  <option value="USD">USD ($)</option>
-                  <option value="SAR">SAR (﷼)</option>
-                  <option value="EGP">EGP (ج.م)</option>
-                </select>
-              </div>
-              <a href="https://engineering-tracks.com/student/login" target="_blank" rel="noopener noreferrer" class="btn btn-primary" style="width:100%;">
-                <i class="fa-solid fa-user-lock"></i>
-                <span>{{ t('nav_portal') }}</span>
+        <!-- Desktop Navigation Menu -->
+        <nav class="desktop-nav" aria-label="Main Navigation">
+          <ul class="nav-menu">
+            <li><a href="#hero" class="nav-link" :class="{ active: activeSection === 'hero' }">{{ t('nav_home') }}</a></li>
+            <li><a href="#tracks" class="nav-link" :class="{ active: activeSection === 'tracks' }">{{ t('nav_tracks') }}</a></li>
+            <li><a href="#courses" class="nav-link" :class="{ active: activeSection === 'courses' }">{{ t('nav_courses') }}</a></li>
+            <li>
+              <a href="#simulator" class="nav-link" :class="{ active: activeSection === 'simulator' }">
+                <span>{{ t('nav_exams') }}</span>
+                <span class="nav-badge-pill">Live</span>
               </a>
-              <div class="mobile-contact-quick">
-                <a href="tel:+201000073779" class="top-bar-item"><i class="fa-solid fa-phone"></i> +20 100 007 3779</a>
-                <a href="tel:+966545716788" class="top-bar-item"><i class="fa-solid fa-phone"></i> +966 54 571 6788</a>
-              </div>
             </li>
+            <li><a href="#why-us" class="nav-link" :class="{ active: activeSection === 'why-us' }">{{ t('nav_why') }}</a></li>
+            <li><a href="#branches" class="nav-link" :class="{ active: activeSection === 'branches' }">{{ t('nav_contact') }}</a></li>
           </ul>
         </nav>
 
-        <!-- Navbar Controls -->
+        <!-- Navbar Controls Toolbar -->
         <div class="nav-actions">
-          <select v-model="currentCurrency" class="currency-select" id="currencySelect" aria-label="Select Currency">
-            <option value="USD">USD ($)</option>
-            <option value="SAR">SAR (﷼)</option>
-            <option value="EGP">EGP (ج.م)</option>
-          </select>
+          <div class="currency-pill" title="Select Currency">
+            <i class="fa-solid fa-coins currency-icon"></i>
+            <select v-model="currentCurrency" class="currency-select" id="currencySelect" aria-label="Select Currency">
+              <option value="SAR">SAR (﷼)</option>
+              <option value="EGP">EGP (ج.م)</option>
+              <option value="USD">USD ($)</option>
+            </select>
+          </div>
 
           <!-- Theme Toggle -->
-          <button @click="toggleTheme" class="icon-btn" :title="currentTheme === 'light' ? 'Switch to Dark Mode' : 'Switch to Light Mode'">
+          <button @click="toggleTheme" class="icon-btn theme-toggle-btn" :title="currentTheme === 'light' ? 'Switch to Dark Mode' : 'Switch to Light Mode'" aria-label="Toggle Theme">
             <i class="fa-solid" :class="currentTheme === 'light' ? 'fa-moon' : 'fa-sun'" :style="currentTheme === 'dark' ? 'color:#FFB800' : ''"></i>
           </button>
 
           <!-- Language Toggle -->
-          <button @click="toggleLanguage" class="icon-btn" title="Toggle Language">
+          <button @click="toggleLanguage" class="icon-btn lang-toggle-btn" title="Toggle Language / تغيير اللغة" aria-label="Toggle Language">
             <i class="fa-solid fa-globe"></i>
-            <span>{{ currentLang === 'en' ? 'عربي' : 'English' }}</span>
+            <span class="lang-label">{{ currentLang === 'en' ? 'عربي' : 'EN' }}</span>
           </button>
 
           <!-- Student Portal CTA -->
-          <a href="https://engineering-tracks.com/student/login" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-sm" id="studentLoginBtn">
+          <a href="https://engineering-tracks.com/student/login" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-portal" id="studentLoginBtn">
             <i class="fa-solid fa-user-lock"></i>
             <span>{{ t('nav_portal') }}</span>
           </a>
 
           <!-- Mobile Hamburger Toggle -->
-          <button class="mobile-toggle" @click="mobileNavOpen = !mobileNavOpen" aria-label="Toggle Menu">
-            <i class="fa-solid" :class="mobileNavOpen ? 'fa-xmark' : 'fa-bars'"></i>
+          <button class="mobile-toggle" @click="mobileNavOpen = !mobileNavOpen" :aria-expanded="mobileNavOpen" aria-label="Toggle Menu">
+            <i class="fa-solid" :class="mobileNavOpen ? 'fa-xmark' : 'fa-bars-staggered'"></i>
           </button>
         </div>
       </div>
     </header>
+
+    <!-- MOBILE DRAWER BACKDROP OVERLAY -->
+    <div class="mobile-nav-overlay" :class="{ open: mobileNavOpen }" @click="closeMobileNav"></div>
+
+    <!-- MOBILE SLIDE-OVER DRAWER -->
+    <aside class="mobile-drawer" :class="{ open: mobileNavOpen }">
+      <div class="drawer-header">
+        <a href="#page-top" class="drawer-logo" @click="closeMobileNav">
+          <img src="/assets/logo.svg" alt="Engineering Tracks Logo" class="logo-english logo-light" />
+          <img src="/assets/logo-dark.svg" alt="Engineering Tracks Logo" class="logo-english logo-dark" />
+          <img src="/assets/logoAr_cropped.png" alt="Engineering Tracks Arabic Logo" class="logo-arabic" />
+        </a>
+        <button class="drawer-close-btn" @click="closeMobileNav" aria-label="Close menu">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <div class="drawer-body">
+        <nav class="drawer-nav">
+          <ul class="drawer-menu">
+            <li>
+              <a href="#hero" class="drawer-link" :class="{ active: activeSection === 'hero' }" @click="closeMobileNav">
+                <i class="fa-solid fa-house"></i>
+                <span>{{ t('nav_home') }}</span>
+              </a>
+            </li>
+            <li>
+              <a href="#tracks" class="drawer-link" :class="{ active: activeSection === 'tracks' }" @click="closeMobileNav">
+                <i class="fa-solid fa-compass-drafting"></i>
+                <span>{{ t('nav_tracks') }}</span>
+                <span class="drawer-badge">16</span>
+              </a>
+            </li>
+            <li>
+              <a href="#courses" class="drawer-link" :class="{ active: activeSection === 'courses' }" @click="closeMobileNav">
+                <i class="fa-solid fa-graduation-cap"></i>
+                <span>{{ t('nav_courses') }}</span>
+              </a>
+            </li>
+            <li>
+              <a href="#simulator" class="drawer-link" :class="{ active: activeSection === 'simulator' }" @click="closeMobileNav">
+                <i class="fa-solid fa-laptop-code"></i>
+                <span>{{ t('nav_exams') }}</span>
+                <span class="drawer-badge badge-pulse">Demo</span>
+              </a>
+            </li>
+            <li>
+              <a href="#why-us" class="drawer-link" :class="{ active: activeSection === 'why-us' }" @click="closeMobileNav">
+                <i class="fa-solid fa-award"></i>
+                <span>{{ t('nav_why') }}</span>
+              </a>
+            </li>
+            <li>
+              <a href="#branches" class="drawer-link" :class="{ active: activeSection === 'branches' }" @click="closeMobileNav">
+                <i class="fa-solid fa-location-dot"></i>
+                <span>{{ t('nav_contact') }}</span>
+              </a>
+            </li>
+          </ul>
+        </nav>
+
+        <!-- Quick Settings Cluster -->
+        <div class="drawer-settings-cluster">
+          <div class="drawer-settings-row">
+            <span class="drawer-setting-label">
+              <i class="fa-solid fa-coins"></i>
+              <span>{{ currentLang === 'ar' ? 'العملة:' : 'Currency:' }}</span>
+            </span>
+            <select v-model="currentCurrency" class="currency-select drawer-currency" aria-label="Select Currency Mobile">
+              <option value="SAR">SAR (﷼)</option>
+              <option value="EGP">EGP (ج.م)</option>
+              <option value="USD">USD ($)</option>
+            </select>
+          </div>
+
+          <div class="drawer-toggles-row">
+            <button @click="toggleTheme" class="drawer-toggle-btn" aria-label="Toggle Theme">
+              <i class="fa-solid" :class="currentTheme === 'light' ? 'fa-moon' : 'fa-sun'" :style="currentTheme === 'dark' ? 'color:#FFB800' : ''"></i>
+              <span>{{ currentTheme === 'light' ? (currentLang === 'ar' ? 'داكن' : 'Dark') : (currentLang === 'ar' ? 'مضيء' : 'Light') }}</span>
+            </button>
+            <button @click="toggleLanguage" class="drawer-toggle-btn" aria-label="Toggle Language">
+              <i class="fa-solid fa-globe"></i>
+              <span>{{ currentLang === 'en' ? 'العربية' : 'English' }}</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Student Portal CTA in drawer -->
+        <div class="drawer-cta-wrapper">
+          <a href="https://engineering-tracks.com/student/login" target="_blank" rel="noopener noreferrer" class="btn btn-primary drawer-portal-btn">
+            <i class="fa-solid fa-user-lock"></i>
+            <span>{{ t('nav_portal') }}</span>
+          </a>
+        </div>
+
+        <!-- Direct Contact Numbers -->
+        <div class="drawer-contacts">
+          <a href="tel:+201000073779" class="drawer-contact-item">
+            <i class="fa-solid fa-phone"></i>
+            <span>EG: +20 100 007 3779</span>
+          </a>
+          <a href="tel:+966545716788" class="drawer-contact-item">
+            <i class="fa-solid fa-phone"></i>
+            <span>KSA: +966 54 571 6788</span>
+          </a>
+          <a href="mailto:info@engineering-tracks.com" class="drawer-contact-item">
+            <i class="fa-solid fa-envelope"></i>
+            <span>info@engineering-tracks.com</span>
+          </a>
+        </div>
+
+        <!-- Drawer Social Links -->
+        <div class="drawer-socials">
+          <a href="https://www.facebook.com/engtracks/" target="_blank" rel="noopener noreferrer" class="top-social-link"><i class="fa-brands fa-facebook-f"></i></a>
+          <a href="https://www.youtube.com/c/EngineeringTracks" target="_blank" rel="noopener noreferrer" class="top-social-link"><i class="fa-brands fa-youtube"></i></a>
+          <a href="https://twitter.com/engtracks_eg" target="_blank" rel="noopener noreferrer" class="top-social-link"><i class="fa-brands fa-x-twitter"></i></a>
+          <a href="https://www.instagram.com/engtracksksa/" target="_blank" rel="noopener noreferrer" class="top-social-link"><i class="fa-brands fa-instagram"></i></a>
+          <a href="https://www.linkedin.com/company/engineering-tracks/" target="_blank" rel="noopener noreferrer" class="top-social-link"><i class="fa-brands fa-linkedin-in"></i></a>
+        </div>
+      </div>
+    </aside>
 
     <!-- HERO SECTION -->
     <section class="hero" id="hero">
@@ -1160,6 +1274,12 @@ watch(currentLang, (newLang) => {
 
 watch(currentCurrency, (newCurr) => {
   localStorage.setItem('et_curr', newCurr);
+});
+
+watch(mobileNavOpen, (isOpen) => {
+  if (typeof document !== 'undefined') {
+    document.body.style.overflow = isOpen ? 'hidden' : '';
+  }
 });
 
 // Handlers
